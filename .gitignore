@@ -1,0 +1,23 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/.next/
+/out/
+
+# misc
+.DS_Store
+.env.local
+*.log
+
+# local data
+/vault/*
+!/vault/not-started/.gitkeep
+!/vault/in-progress/.gitkeep
+!/vault/pending/.gitkeep
+!/vault/done/.gitkeep
