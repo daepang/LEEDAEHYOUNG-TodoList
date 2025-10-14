@@ -230,7 +230,7 @@ export const colors = {
 
 ## 📄 라이선스
 
-MIT
+DAEPANG
 
 ## 🙋‍♂️ 개발자
 

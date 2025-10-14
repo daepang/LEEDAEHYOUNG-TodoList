@@ -1,7 +1,6 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { colors } from "@/constants/color";
 
 interface EditorProps {
   content: string;
@@ -18,7 +17,6 @@ export function Editor({ content, onContentChange }: EditorProps) {
         style={{
           flex: 1,
           padding: 12,
-          borderRight: `1px solid ${colors.border}`,
           outline: "none",
           fontFamily:
             "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
