@@ -13,6 +13,8 @@ interface TreeItemProps {
   onCreateFolder?: (parentPath: string) => void;
   onDelete?: (path: string) => void;
   onRename?: (path: string, currentName: string) => void;
+  expandedPaths: Set<string>;
+  onToggleExpand: (path: string) => void;
 }
 
 export function TreeItem({
@@ -24,8 +26,10 @@ export function TreeItem({
   onCreateFolder,
   onDelete,
   onRename,
+  expandedPaths,
+  onToggleExpand,
 }: TreeItemProps) {
-  const [isExpanded, setIsExpanded] = useState(node.isExpanded ?? false);
+  const isExpanded = expandedPaths.has(node.path);
   const [contextMenu, setContextMenu] = useState<{
     x: number;
     y: number;
@@ -34,7 +38,7 @@ export function TreeItem({
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (node.type === "folder") {
-      setIsExpanded(!isExpanded);
+      onToggleExpand(node.path);
     }
   };
 
@@ -42,7 +46,7 @@ export function TreeItem({
     if (node.type === "file") {
       onFileClick({ name: node.name, path: node.path });
     } else {
-      setIsExpanded(!isExpanded);
+      onToggleExpand(node.path);
     }
   };
 
@@ -151,6 +155,8 @@ export function TreeItem({
               onCreateFolder={onCreateFolder}
               onDelete={onDelete}
               onRename={onRename}
+              expandedPaths={expandedPaths}
+              onToggleExpand={onToggleExpand}
             />
           ))}
         </div>
