@@ -9,14 +9,16 @@ export async function GET(req: Request) {
   try {
     const content = await readFileByVaultPath(p);
     return NextResponse.json({ content });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 404 });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "파일을 읽을 수 없습니다";
+    return NextResponse.json({ error: message }, { status: 404 });
   }
 }
 
 export async function POST(req: Request) {
   const { path, content } = await req.json();
-  if (!path) return NextResponse.json({ error: "path required" }, { status: 400 });
+  if (!path)
+    return NextResponse.json({ error: "path required" }, { status: 400 });
   await writeFileByVaultPath(path, content ?? "");
   return NextResponse.json({ ok: true });
 }

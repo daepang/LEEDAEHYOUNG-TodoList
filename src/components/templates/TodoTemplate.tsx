@@ -1,4 +1,3 @@
-import React from "react";
 import { Sidebar } from "../organisms/Sidebar";
 import { Toolbar } from "../molecules/Toolbar";
 import { Editor } from "../organisms/Editor";

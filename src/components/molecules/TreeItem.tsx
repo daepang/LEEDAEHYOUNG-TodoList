@@ -58,6 +58,7 @@ export function TreeItem({
 
   const paddingLeft = level * 16 + 8;
 
+  // 컨텍스트 메뉴 항목 정의
   const menuItems = [
     ...(node.type === "folder"
       ? [

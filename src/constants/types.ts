@@ -9,5 +9,4 @@ export interface TreeNode {
   path: string;
   type: "folder" | "file";
   children?: TreeNode[];
-  isExpanded?: boolean;
 }

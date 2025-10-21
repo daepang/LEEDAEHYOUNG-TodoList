@@ -1,11 +1,11 @@
 // 색상 팔레트
 export const colors = {
-  // Primary Colors
+  // 주요 색상
   primary: "#0a66c2",
   primaryLight: "#e6f2ff",
   primaryLighter: "#eef7ff",
 
-  // Gray Scale
+  // 회색 계열
   white: "#ffffff",
   gray50: "#fafafa",
   gray100: "#f0f0f0",
@@ -16,24 +16,24 @@ export const colors = {
   gray600: "#666",
   gray700: "#333",
 
-  // Status Colors
+  // 상태 색상
   notStarted: "#6b7280",
   inProgress: "#2563eb",
   pending: "#d97706",
   done: "#16a34a",
 
-  // Borders
+  // 테두리
   border: "#eee",
   borderDashed: "#ddd",
   borderLight: "#ddd",
 
-  // Backgrounds
+  // 배경
   bgGray: "#fafafa",
   bgWhite: "#ffffff",
   bgHover: "#f0f0f0",
   bgActive: "#eef7ff",
 
-  // Text
+  // 텍스트
   textPrimary: "#333",
   textSecondary: "#666",
 } as const;

@@ -30,7 +30,6 @@ export function buildFileTree(items: FileItem[]): TreeNode[] {
         name: part,
         path: currentPath,
         type: isFile ? "file" : "folder",
-        isExpanded: true,
       };
 
       if (!isFile) {

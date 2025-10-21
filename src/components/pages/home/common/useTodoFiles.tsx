@@ -21,7 +21,8 @@ export function useTodoFiles() {
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const reload = async () => {
+  // 모든 폴더의 파일 목록을 다시 불러옴
+  const handleReload = async () => {
     const [ns, ip, p, d] = await Promise.all([
       fetchFiles("not-started"),
       fetchFiles("in-progress"),
@@ -33,11 +34,12 @@ export function useTodoFiles() {
     setPending(p);
     setDone(d);
     if (!active && ns[0]) {
-      openFile(ns[0]);
+      handleOpenFile(ns[0]);
     }
   };
 
-  const openFile = async (file: FileItem) => {
+  // 파일을 열고 내용을 불러옴
+  const handleOpenFile = async (file: FileItem) => {
     try {
       const c = await fetchContent(file.path);
       setActive(file);
@@ -48,6 +50,7 @@ export function useTodoFiles() {
     }
   };
 
+  // 현재 활성화된 파일을 저장
   const handleSave = async () => {
     if (!active) return;
     setSaving(true);
@@ -62,22 +65,25 @@ export function useTodoFiles() {
     }
   };
 
+  // 오늘 날짜로 새 파일 생성
   const handleCreateFile = async () => {
     const path = await createNewFile();
-    await reload();
+    await handleReload();
     const fileName = path.split("/").pop();
     if (fileName) {
       const file = { name: fileName, path };
-      openFile(file);
+      handleOpenFile(file);
     }
   };
 
-  const onDragStart = (e: React.DragEvent, item: FileItem) => {
+  // 드래그 시작 시 파일 경로 전달
+  const handleDragStart = (e: React.DragEvent, item: FileItem) => {
     e.dataTransfer.setData("text/plain", item.path);
     e.dataTransfer.effectAllowed = "move";
   };
 
-  const onDropTo = async (folder: FolderType, e: React.DragEvent) => {
+  // 드롭 시 파일을 다른 폴더로 이동
+  const handleDropTo = async (folder: FolderType, e: React.DragEvent) => {
     e.preventDefault();
     const fromPath = e.dataTransfer.getData("text/plain");
     if (!fromPath) return;
@@ -93,7 +99,7 @@ export function useTodoFiles() {
     if (fromPath === toPath) return;
 
     await moveFile(fromPath, toPath);
-    await reload();
+    await handleReload();
 
     if (active && active.path === fromPath) {
       const name = parts[parts.length - 1];
@@ -103,6 +109,7 @@ export function useTodoFiles() {
     }
   };
 
+  // 새 폴더 생성
   const handleCreateFolder = async (parentPath: string) => {
     const folderName = prompt("폴더 이름을 입력하세요:");
     if (!folderName) return;
@@ -110,7 +117,7 @@ export function useTodoFiles() {
     const newFolderPath = `${parentPath}/${folderName}`;
     try {
       await createFolder(newFolderPath);
-      await reload();
+      await handleReload();
       alert(`폴더가 생성되었습니다: ${folderName}`);
     } catch (error) {
       alert("폴더 생성에 실패했습니다.");
@@ -118,12 +125,13 @@ export function useTodoFiles() {
     }
   };
 
+  // 파일 또는 폴더 삭제
   const handleDelete = async (path: string) => {
     const confirmed = confirm(`정말로 삭제하시겠습니까?\n${path}`);
     if (!confirmed) return;
 
     await deletePath(path);
-    await reload();
+    await handleReload();
 
     if (active && active.path === path) {
       setActive(null);
@@ -131,12 +139,13 @@ export function useTodoFiles() {
     }
   };
 
+  // 파일 또는 폴더 이름 변경
   const handleRename = async (path: string, currentName: string) => {
     const newName = prompt("새 이름을 입력하세요:", currentName);
     if (!newName || newName === currentName) return;
 
     const newPath = await renamePath(path, newName);
-    await reload();
+    await handleReload();
 
     if (active && active.path === path) {
       const name = newPath.split("/").pop();
@@ -147,7 +156,7 @@ export function useTodoFiles() {
   };
 
   useEffect(() => {
-    reload();
+    handleReload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -160,11 +169,11 @@ export function useTodoFiles() {
     content,
     saving,
     setContent,
-    openFile,
+    openFile: handleOpenFile,
     handleSave,
     handleCreateFile,
-    onDragStart,
-    onDropTo,
+    onDragStart: handleDragStart,
+    onDropTo: handleDropTo,
     handleCreateFolder,
     handleDelete,
     handleRename,
