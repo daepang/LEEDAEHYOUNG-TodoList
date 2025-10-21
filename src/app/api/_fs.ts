@@ -94,7 +94,10 @@ export async function listFiles(dir: FolderType) {
 
 export async function readFileByVaultPath(vaultPath: string) {
   await ensureDirs();
-  const [_, folder, ...rest] = vaultPath.split("/"); // "/pending/2025-09-30.md"
+  const parts = vaultPath.split("/");
+  const folder = parts[1]; // "/pending/2025-09-30.md"의 경우 "pending"
+  const rest = parts.slice(2);
+
   let base: string;
   switch (folder) {
     case "not-started":
@@ -119,7 +122,10 @@ export async function readFileByVaultPath(vaultPath: string) {
 
 export async function writeFileByVaultPath(vaultPath: string, content: string) {
   await ensureDirs();
-  const [_, folder, ...rest] = vaultPath.split("/");
+  const parts = vaultPath.split("/");
+  const folder = parts[1];
+  const rest = parts.slice(2);
+
   let base: string;
   switch (folder) {
     case "not-started":
@@ -149,8 +155,12 @@ export async function writeFileByVaultPath(vaultPath: string, content: string) {
 
 export async function moveFile(fromVaultPath: string, toVaultPath: string) {
   await ensureDirs();
-  const [_, f1, ...r1] = fromVaultPath.split("/");
-  const [__, f2, ...r2] = toVaultPath.split("/");
+  const fromParts = fromVaultPath.split("/");
+  const toParts = toVaultPath.split("/");
+  const f1 = fromParts[1];
+  const r1 = fromParts.slice(2);
+  const f2 = toParts[1];
+  const r2 = toParts.slice(2);
 
   const getBase = (folder: string) => {
     switch (folder) {
@@ -181,7 +191,9 @@ export async function moveFile(fromVaultPath: string, toVaultPath: string) {
 
 export async function createFolder(vaultPath: string) {
   await ensureDirs();
-  const [_, folder, ...rest] = vaultPath.split("/");
+  const parts = vaultPath.split("/");
+  const folder = parts[1];
+  const rest = parts.slice(2);
 
   const getBase = (folder: string) => {
     switch (folder) {
@@ -205,7 +217,9 @@ export async function createFolder(vaultPath: string) {
 
 export async function deletePath(vaultPath: string) {
   await ensureDirs();
-  const [_, folder, ...rest] = vaultPath.split("/");
+  const parts = vaultPath.split("/");
+  const folder = parts[1];
+  const rest = parts.slice(2);
 
   const getBase = (folder: string) => {
     switch (folder) {
@@ -236,7 +250,9 @@ export async function deletePath(vaultPath: string) {
 
 export async function renamePath(fromVaultPath: string, newName: string) {
   await ensureDirs();
-  const [_, folder, ...rest] = fromVaultPath.split("/");
+  const parts = fromVaultPath.split("/");
+  const folder = parts[1];
+  const rest = parts.slice(2);
 
   const getBase = (folder: string) => {
     switch (folder) {

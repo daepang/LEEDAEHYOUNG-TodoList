@@ -21,7 +21,7 @@ export function useTodoFiles() {
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
 
-  async function reload() {
+  const reload = async () => {
     const [ns, ip, p, d] = await Promise.all([
       fetchFiles("not-started"),
       fetchFiles("in-progress"),
@@ -32,10 +32,12 @@ export function useTodoFiles() {
     setInProgress(ip);
     setPending(p);
     setDone(d);
-    if (!active && ns[0]) openFile(ns[0]);
-  }
+    if (!active && ns[0]) {
+      openFile(ns[0]);
+    }
+  };
 
-  async function openFile(file: FileItem) {
+  const openFile = async (file: FileItem) => {
     try {
       const c = await fetchContent(file.path);
       setActive(file);
@@ -44,9 +46,9 @@ export function useTodoFiles() {
       setActive(file);
       setContent("");
     }
-  }
+  };
 
-  async function handleSave() {
+  const handleSave = async () => {
     if (!active) return;
     setSaving(true);
     try {
@@ -58,21 +60,24 @@ export function useTodoFiles() {
     } finally {
       setSaving(false);
     }
-  }
+  };
 
-  async function handleCreateFile() {
+  const handleCreateFile = async () => {
     const path = await createNewFile();
     await reload();
-    const file = { name: path.split("/").pop()!, path };
-    openFile(file);
-  }
+    const fileName = path.split("/").pop();
+    if (fileName) {
+      const file = { name: fileName, path };
+      openFile(file);
+    }
+  };
 
-  function onDragStart(e: React.DragEvent, item: FileItem) {
+  const onDragStart = (e: React.DragEvent, item: FileItem) => {
     e.dataTransfer.setData("text/plain", item.path);
     e.dataTransfer.effectAllowed = "move";
-  }
+  };
 
-  async function onDropTo(folder: FolderType, e: React.DragEvent) {
+  const onDropTo = async (folder: FolderType, e: React.DragEvent) => {
     e.preventDefault();
     const fromPath = e.dataTransfer.getData("text/plain");
     if (!fromPath) return;
@@ -92,11 +97,13 @@ export function useTodoFiles() {
 
     if (active && active.path === fromPath) {
       const name = parts[parts.length - 1];
-      setActive({ name, path: toPath });
+      if (name) {
+        setActive({ name, path: toPath });
+      }
     }
-  }
+  };
 
-  async function handleCreateFolder(parentPath: string) {
+  const handleCreateFolder = async (parentPath: string) => {
     const folderName = prompt("폴더 이름을 입력하세요:");
     if (!folderName) return;
 
@@ -109,9 +116,9 @@ export function useTodoFiles() {
       alert("폴더 생성에 실패했습니다.");
       console.error("Create folder error:", error);
     }
-  }
+  };
 
-  async function handleDelete(path: string) {
+  const handleDelete = async (path: string) => {
     const confirmed = confirm(`정말로 삭제하시겠습니까?\n${path}`);
     if (!confirmed) return;
 
@@ -122,9 +129,9 @@ export function useTodoFiles() {
       setActive(null);
       setContent("");
     }
-  }
+  };
 
-  async function handleRename(path: string, currentName: string) {
+  const handleRename = async (path: string, currentName: string) => {
     const newName = prompt("새 이름을 입력하세요:", currentName);
     if (!newName || newName === currentName) return;
 
@@ -132,10 +139,12 @@ export function useTodoFiles() {
     await reload();
 
     if (active && active.path === path) {
-      const name = newPath.split("/").pop()!;
-      setActive({ name, path: newPath });
+      const name = newPath.split("/").pop();
+      if (name) {
+        setActive({ name, path: newPath });
+      }
     }
-  }
+  };
 
   useEffect(() => {
     reload();

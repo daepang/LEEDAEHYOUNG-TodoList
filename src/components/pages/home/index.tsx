@@ -1,8 +1,8 @@
 "use client";
 
-import { TodoTemplate } from "../templates/TodoTemplate";
-import { useTodoFiles } from "@/hooks/useTodoFiles";
-import { useSaveShortcut } from "@/hooks/useSaveShortcut";
+import { TodoTemplate } from "@/components/templates/TodoTemplate";
+import { useTodoFiles } from "./common/useTodoFiles";
+import { useSaveShortcut } from "./common/useSaveShortcut";
 
 export function HomePage() {
   const {

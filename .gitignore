@@ -21,3 +21,6 @@
 !/vault/in-progress/.gitkeep
 !/vault/pending/.gitkeep
 !/vault/done/.gitkeep
+
+# documents
+AGENTS.md
