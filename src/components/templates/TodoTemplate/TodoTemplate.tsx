@@ -1,9 +1,10 @@
-import { Sidebar } from "../organisms/Sidebar";
-import { Toolbar } from "../molecules/Toolbar";
-import { Editor } from "../organisms/Editor";
-import { Footer } from "../atoms/Footer";
+import { Sidebar } from "@/components/organisms/Sidebar/Sidebar";
+import { Toolbar } from "@/components/molecules/Toolbar/Toolbar";
+import { Editor } from "@/components/organisms/Editor/Editor";
+import { Footer } from "@/components/atoms/Footer/Footer";
 import { type FileItem } from "@/constants/types";
 import { type FolderType } from "@/constants/folders";
+import { containerStyle, mainContentStyle, editorContainerStyle } from "./style";
 
 interface TodoTemplateProps {
   notStarted: FileItem[];
@@ -43,15 +44,8 @@ export function TodoTemplate({
   onRename,
 }: TodoTemplateProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
-      }}
-    >
-      <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+    <div style={containerStyle}>
+      <div style={mainContentStyle}>
         <Sidebar
           notStarted={notStarted}
           inProgress={inProgress}
@@ -66,7 +60,7 @@ export function TodoTemplate({
           onRename={onRename}
         />
 
-        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <div style={editorContainerStyle}>
           <Toolbar
             onCreateFile={onCreateFile}
             onSave={onSave}
@@ -81,3 +75,4 @@ export function TodoTemplate({
     </div>
   );
 }
+

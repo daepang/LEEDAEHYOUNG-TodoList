@@ -1,9 +1,15 @@
-import React, { useMemo, useState, useCallback } from "react";
-import { TreeItem } from "../molecules/TreeItem";
+import { useMemo, useState, useCallback, useEffect } from "react";
+import { TreeItem } from "@/components/molecules/TreeItem/TreeItem";
 import { type FileItem, type TreeNode } from "@/constants/types";
 import { type FolderType } from "@/constants/folders";
 import { buildFileTree } from "@/utils/fileTree";
-import { colors } from "@/constants/color";
+import {
+  getListStyle,
+  headerStyle,
+  getTitleStyle,
+  buttonContainerStyle,
+  getControlButtonStyle,
+} from "./style";
 
 interface FileListProps {
   title: string;
@@ -36,6 +42,10 @@ export function FileList({
     e.preventDefault();
   };
 
+  const handleDrop = (e: React.DragEvent) => {
+    onDropTo(folder, e);
+  };
+
   const tree = useMemo(() => buildFileTree(files), [files]);
 
   // 모든 폴더 경로를 수집하는 함수
@@ -59,7 +69,7 @@ export function FileList({
   });
 
   // tree가 변경될 때 expandedPaths 업데이트
-  React.useEffect(() => {
+  useEffect(() => {
     setExpandedPaths(new Set(collectAllFolderPaths(tree)));
   }, [tree, collectAllFolderPaths]);
 
@@ -83,74 +93,41 @@ export function FileList({
     setExpandedPaths(new Set());
   };
 
-  const listStyle: React.CSSProperties = {
-    flex: 1,
-    border: `1px dashed ${colors.borderDashed}`,
-    borderRadius: 8,
-    padding: 8,
-    minHeight: 240,
-    overflowY: "auto",
-    maxHeight: "calc(100vh - 120px)",
+  const handleCreateFolder = () => {
+    if (onCreateFolder) {
+      onCreateFolder(`/${folder}`);
+    }
   };
 
   return (
     <div
       onDragOver={allowDrop}
-      onDrop={(e) => onDropTo(folder, e)}
-      style={listStyle}
+      onDrop={handleDrop}
+      style={getListStyle()}
       aria-label={`${title} dropzone`}
       title={`여기에 드랍하면 ${title}으로 이동`}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: 6,
-          gap: 4,
-        }}
-      >
-        <div style={{ fontWeight: 700, color }}>{title}</div>
-        <div style={{ display: "flex", gap: 4 }}>
+      <div style={headerStyle}>
+        <div style={getTitleStyle(color)}>{title}</div>
+        <div style={buttonContainerStyle}>
           <button
             onClick={handleExpandAll}
-            style={{
-              padding: "2px 6px",
-              fontSize: 11,
-              borderRadius: 4,
-              border: `1px solid ${colors.borderLight}`,
-              background: colors.white,
-              cursor: "pointer",
-            }}
+            style={getControlButtonStyle()}
             title="모두 펼치기"
           >
             모두 펼치기
           </button>
           <button
             onClick={handleCollapseAll}
-            style={{
-              padding: "2px 6px",
-              fontSize: 11,
-              borderRadius: 4,
-              border: `1px solid ${colors.borderLight}`,
-              background: colors.white,
-              cursor: "pointer",
-            }}
+            style={getControlButtonStyle()}
             title="모두 접기"
           >
             모두 접기
           </button>
           {onCreateFolder && (
             <button
-              onClick={() => onCreateFolder(`/${folder}`)}
-              style={{
-                padding: "2px 6px",
-                fontSize: 11,
-                borderRadius: 4,
-                border: `1px solid ${colors.borderLight}`,
-                background: colors.white,
-                cursor: "pointer",
-              }}
+              onClick={handleCreateFolder}
+              style={getControlButtonStyle()}
               title="새 폴더 만들기"
             >
               + 폴더

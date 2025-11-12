@@ -1,8 +1,12 @@
-import React, { useState } from "react";
-import { type TreeNode } from "@/constants/types";
-import { type FileItem } from "@/constants/types";
-import { ContextMenu } from "./ContextMenu";
-import { colors } from "@/constants/color";
+import { useState } from "react";
+import { type TreeNode, type FileItem } from "@/constants/types";
+import { ContextMenu } from "@/components/molecules/ContextMenu/ContextMenu";
+import {
+  getTreeItemStyle,
+  expandIconStyle,
+  fileIconStyle,
+  getNodeNameStyle,
+} from "./style";
 
 interface TreeItemProps {
   node: TreeNode;
@@ -56,7 +60,12 @@ export function TreeItem({
     setContextMenu({ x: e.clientX, y: e.clientY });
   };
 
-  const paddingLeft = level * 16 + 8;
+  const handleCloseContextMenu = () => {
+    setContextMenu(null);
+  };
+
+  const isFile = node.type === "file";
+  const isActive = isFile && activeFilePath === node.path;
 
   // 컨텍스트 메뉴 항목 정의
   const menuItems = [
@@ -81,55 +90,23 @@ export function TreeItem({
   return (
     <>
       <div
-        draggable={node.type === "file"}
+        draggable={isFile}
         onDragStart={
-          node.type === "file"
+          isFile
             ? (e) => onDragStart(e, { name: node.name, path: node.path })
             : undefined
         }
         onClick={handleClick}
         onContextMenu={handleContextMenu}
-        style={{
-          paddingLeft,
-          paddingTop: 4,
-          paddingBottom: 4,
-          paddingRight: 8,
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-          cursor: node.type === "file" ? "grab" : "pointer",
-          background:
-            node.type === "file" && activeFilePath === node.path
-              ? colors.bgActive
-              : "transparent",
-          borderRadius: 4,
-          marginBottom: 2,
-          userSelect: "none",
-        }}
+        style={getTreeItemStyle(level, isFile, isActive)}
       >
         {node.type === "folder" && (
-          <span
-            onClick={handleToggle}
-            style={{
-              fontSize: 12,
-              width: 16,
-              textAlign: "center",
-              fontWeight: "bold",
-            }}
-          >
+          <span onClick={handleToggle} style={expandIconStyle}>
             {isExpanded ? "−" : "+"}
           </span>
         )}
-        {node.type === "file" && (
-          <span style={{ width: 16, textAlign: "center" }}>📄</span>
-        )}
-        <span
-          style={{
-            fontSize: 13,
-            fontWeight: node.type === "folder" ? 600 : 400,
-            opacity: node.type === "folder" ? 0.8 : 1,
-          }}
-        >
+        {isFile && <span style={fileIconStyle}>📄</span>}
+        <span style={getNodeNameStyle(node.type === "folder")}>
           {node.name}
         </span>
       </div>
@@ -138,7 +115,7 @@ export function TreeItem({
         <ContextMenu
           x={contextMenu.x}
           y={contextMenu.y}
-          onClose={() => setContextMenu(null)}
+          onClose={handleCloseContextMenu}
           items={menuItems}
         />
       )}

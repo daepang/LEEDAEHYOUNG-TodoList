@@ -1,9 +1,7 @@
-import React, { useMemo } from "react";
-import { FileList } from "./FileList";
+import { FileList } from "@/components/organisms/FileList/FileList";
 import { type FileItem } from "@/constants/types";
-import { type FolderType } from "@/constants/folders";
-import { FOLDER_CONFIGS } from "@/constants/folders";
-import { colors } from "@/constants/color";
+import { type FolderType, FOLDER_CONFIGS } from "@/constants/folders";
+import { sidebarStyle } from "./style";
 
 interface SidebarProps {
   notStarted: FileItem[];
@@ -32,19 +30,6 @@ export function Sidebar({
   onDelete,
   onRename,
 }: SidebarProps) {
-  const sidebarStyle: React.CSSProperties = useMemo(
-    () => ({
-      width: 560,
-      borderRight: `1px solid ${colors.border}`,
-      padding: 12,
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gap: 12,
-      overflowY: "auto",
-    }),
-    []
-  );
-
   const filesMap: Record<FolderType, FileItem[]> = {
     "not-started": notStarted,
     "in-progress": inProgress,
@@ -73,3 +58,4 @@ export function Sidebar({
     </div>
   );
 }
+
