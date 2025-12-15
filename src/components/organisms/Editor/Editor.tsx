@@ -20,6 +20,26 @@ export function Editor({ content, onContentChange }: EditorProps) {
     onContentChange(e.target.value);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const target = e.currentTarget;
+      const start = target.selectionStart;
+      const end = target.selectionEnd;
+
+      // Insert 2 spaces at cursor position
+      const newContent =
+        content.substring(0, start) + "  " + content.substring(end);
+
+      onContentChange(newContent);
+
+      // Move cursor after the inserted spaces
+      setTimeout(() => {
+        target.selectionStart = target.selectionEnd = start + 2;
+      }, 0);
+    }
+  };
+
   return (
     <div style={editorContainerStyle}>
       <div style={editorPaneStyle}>
@@ -30,6 +50,7 @@ export function Editor({ content, onContentChange }: EditorProps) {
           id="markdown-editor"
           value={content}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           placeholder="- [✅] 할 일 작성&#10;- [x] 완료 항목"
           aria-label="마크다운 편집기"
           style={textareaStyle}
