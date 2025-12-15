@@ -36,6 +36,11 @@ export const colors = {
   // 텍스트
   textPrimary: "#333",
   textSecondary: "#666",
+
+  // 그림자 및 투명도
+  shadow: "rgba(0, 0, 0, 0.1)",
+  shadowLight: "rgba(0, 0, 0, 0.05)",
+  whiteTransparent: "rgba(255, 255, 255, 0.9)",
 } as const;
 
 export type Color = (typeof colors)[keyof typeof colors];

@@ -1,15 +1,17 @@
+import { colors } from "@/constants/color";
+
 export const headerContainerStyle = {
-    background: "#2563eb",
+    background: colors.inProgress,
     padding: "12px 24px",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-    borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
+    boxShadow: `0 1px 3px ${colors.shadow}`,
+    borderBottom: `1px solid ${colors.shadowLight}`,
 } as const;
 
 export const headerTitleStyle = {
     margin: 0,
     fontSize: 18,
     fontWeight: 700,
-    color: "#ffffff",
+    color: colors.white,
     letterSpacing: "-0.2px",
 } as const;
 
@@ -17,5 +19,5 @@ export const headerSubtitleStyle = {
     margin: "2px 0 0 0",
     fontSize: 12,
     fontWeight: 400,
-    color: "rgba(255, 255, 255, 0.9)",
+    color: colors.whiteTransparent,
 } as const;

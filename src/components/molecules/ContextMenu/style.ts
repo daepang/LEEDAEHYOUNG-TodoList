@@ -7,7 +7,7 @@ export const getMenuStyle = (x: number, y: number) => ({
   background: colors.white,
   border: `1px solid ${colors.gray400}`,
   borderRadius: 6,
-  boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+  boxShadow: `0 2px 10px ${colors.shadow}`,
   zIndex: 1000,
   minWidth: 160,
   padding: "4px 0",
