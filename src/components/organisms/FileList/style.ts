@@ -15,7 +15,6 @@ export const headerStyle = {
   alignItems: "center",
   justifyContent: "space-between",
   marginBottom: 6,
-  gap: 4,
 } as const;
 
 export const getTitleStyle = (color: string) => ({

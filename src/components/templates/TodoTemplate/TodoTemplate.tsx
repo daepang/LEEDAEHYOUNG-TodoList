@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/organisms/Sidebar/Sidebar";
 import { Toolbar } from "@/components/molecules/Toolbar/Toolbar";
 import { Editor } from "@/components/organisms/Editor/Editor";
 import { Footer } from "@/components/atoms/Footer/Footer";
+import { Header } from "@/components/atoms/Header/Header";
 import { type FileItem } from "@/constants/types";
 import { type FolderType } from "@/constants/folders";
 import { containerStyle, mainContentStyle, editorContainerStyle } from "./style";
@@ -45,6 +46,7 @@ export function TodoTemplate({
 }: TodoTemplateProps) {
   return (
     <div style={containerStyle}>
+      <Header />
       <div style={mainContentStyle}>
         <Sidebar
           notStarted={notStarted}
