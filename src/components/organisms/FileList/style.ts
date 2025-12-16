@@ -6,11 +6,16 @@ export const getListStyle = () => ({
   padding: 8,
   height: "100%",
   minHeight: 0,
-  overflowY: "auto" as const,
   display: "flex",
   flexDirection: "column" as const,
   boxSizing: "border-box" as const,
 });
+
+export const fileListContentStyle = {
+  flex: 1,
+  overflowY: "auto" as const,
+  minHeight: 0,
+} as const;
 
 export const headerStyle = {
   display: "flex",

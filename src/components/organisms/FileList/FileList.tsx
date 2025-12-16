@@ -9,6 +9,7 @@ import {
   getTitleStyle,
   buttonContainerStyle,
   getControlButtonStyle,
+  fileListContentStyle,
 } from "./style";
 
 interface FileListProps {
@@ -135,21 +136,23 @@ export function FileList({
           )}
         </div>
       </div>
-      {tree.map((node) => (
-        <TreeItem
-          key={node.path}
-          node={node}
-          level={0}
-          activeFilePath={activeFilePath}
-          onDragStart={onDragStart}
-          onFileClick={onFileClick}
-          onCreateFolder={onCreateFolder}
-          onDelete={onDelete}
-          onRename={onRename}
-          expandedPaths={expandedPaths}
-          onToggleExpand={handleToggle}
-        />
-      ))}
+      <div style={fileListContentStyle}>
+        {tree.map((node) => (
+          <TreeItem
+            key={node.path}
+            node={node}
+            level={0}
+            activeFilePath={activeFilePath}
+            onDragStart={onDragStart}
+            onFileClick={onFileClick}
+            onCreateFolder={onCreateFolder}
+            onDelete={onDelete}
+            onRename={onRename}
+            expandedPaths={expandedPaths}
+            onToggleExpand={handleToggle}
+          />
+        ))}
+      </div>
     </div>
   );
 }
