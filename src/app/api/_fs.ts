@@ -21,6 +21,26 @@ export function safeJoin(base: string, p: string) {
   return target;
 }
 
+/**
+ * Get the base directory path for a given folder type
+ * @param folder - The folder type (not-started, in-progress, pending, done)
+ * @returns The absolute path to the folder directory
+ */
+export function getBaseDirByFolder(folder: string): string {
+  switch (folder) {
+    case "not-started":
+      return NOT_STARTED_DIR;
+    case "in-progress":
+      return IN_PROGRESS_DIR;
+    case "pending":
+      return PENDING_DIR;
+    case "done":
+      return DONE_DIR;
+    default:
+      return NOT_STARTED_DIR;
+  }
+}
+
 export type FolderType = "not-started" | "in-progress" | "pending" | "done";
 
 async function listFilesRecursive(
@@ -74,21 +94,7 @@ async function listFilesRecursive(
 
 export async function listFiles(dir: FolderType) {
   await ensureDirs();
-  let base: string;
-  switch (dir) {
-    case "not-started":
-      base = NOT_STARTED_DIR;
-      break;
-    case "in-progress":
-      base = IN_PROGRESS_DIR;
-      break;
-    case "pending":
-      base = PENDING_DIR;
-      break;
-    case "done":
-      base = DONE_DIR;
-      break;
-  }
+  const base = getBaseDirByFolder(dir);
   return await listFilesRecursive(base, base, dir);
 }
 
@@ -98,23 +104,7 @@ export async function readFileByVaultPath(vaultPath: string) {
   const folder = parts[1]; // "/pending/2025-09-30.md"의 경우 "pending"
   const rest = parts.slice(2);
 
-  let base: string;
-  switch (folder) {
-    case "not-started":
-      base = NOT_STARTED_DIR;
-      break;
-    case "in-progress":
-      base = IN_PROGRESS_DIR;
-      break;
-    case "pending":
-      base = PENDING_DIR;
-      break;
-    case "done":
-      base = DONE_DIR;
-      break;
-    default:
-      base = PENDING_DIR;
-  }
+  const base = getBaseDirByFolder(folder);
   const rel = rest.join("/");
   const file = safeJoin(base, rel);
   return fs.readFile(file, "utf8");
@@ -126,23 +116,7 @@ export async function writeFileByVaultPath(vaultPath: string, content: string) {
   const folder = parts[1];
   const rest = parts.slice(2);
 
-  let base: string;
-  switch (folder) {
-    case "not-started":
-      base = NOT_STARTED_DIR;
-      break;
-    case "in-progress":
-      base = IN_PROGRESS_DIR;
-      break;
-    case "pending":
-      base = PENDING_DIR;
-      break;
-    case "done":
-      base = DONE_DIR;
-      break;
-    default:
-      base = PENDING_DIR;
-  }
+  const base = getBaseDirByFolder(folder);
   const rel = rest.join("/");
   const file = safeJoin(base, rel);
 
@@ -162,23 +136,8 @@ export async function moveFile(fromVaultPath: string, toVaultPath: string) {
   const f2 = toParts[1];
   const r2 = toParts.slice(2);
 
-  const getBase = (folder: string) => {
-    switch (folder) {
-      case "not-started":
-        return NOT_STARTED_DIR;
-      case "in-progress":
-        return IN_PROGRESS_DIR;
-      case "pending":
-        return PENDING_DIR;
-      case "done":
-        return DONE_DIR;
-      default:
-        return PENDING_DIR;
-    }
-  };
-
-  const base1 = getBase(f1);
-  const base2 = getBase(f2);
+  const base1 = getBaseDirByFolder(f1);
+  const base2 = getBaseDirByFolder(f2);
   const src = safeJoin(base1, r1.join("/"));
   const dest = safeJoin(base2, r2.join("/"));
 
@@ -195,22 +154,7 @@ export async function createFolder(vaultPath: string) {
   const folder = parts[1];
   const rest = parts.slice(2);
 
-  const getBase = (folder: string) => {
-    switch (folder) {
-      case "not-started":
-        return NOT_STARTED_DIR;
-      case "in-progress":
-        return IN_PROGRESS_DIR;
-      case "pending":
-        return PENDING_DIR;
-      case "done":
-        return DONE_DIR;
-      default:
-        return NOT_STARTED_DIR;
-    }
-  };
-
-  const base = getBase(folder);
+  const base = getBaseDirByFolder(folder);
   const folderPath = safeJoin(base, rest.join("/"));
   await fs.mkdir(folderPath, { recursive: true });
 }
@@ -221,22 +165,7 @@ export async function deletePath(vaultPath: string) {
   const folder = parts[1];
   const rest = parts.slice(2);
 
-  const getBase = (folder: string) => {
-    switch (folder) {
-      case "not-started":
-        return NOT_STARTED_DIR;
-      case "in-progress":
-        return IN_PROGRESS_DIR;
-      case "pending":
-        return PENDING_DIR;
-      case "done":
-        return DONE_DIR;
-      default:
-        return NOT_STARTED_DIR;
-    }
-  };
-
-  const base = getBase(folder);
+  const base = getBaseDirByFolder(folder);
   const targetPath = safeJoin(base, rest.join("/"));
 
   // 파일인지 폴더인지 확인
@@ -254,22 +183,7 @@ export async function renamePath(fromVaultPath: string, newName: string) {
   const folder = parts[1];
   const rest = parts.slice(2);
 
-  const getBase = (folder: string) => {
-    switch (folder) {
-      case "not-started":
-        return NOT_STARTED_DIR;
-      case "in-progress":
-        return IN_PROGRESS_DIR;
-      case "pending":
-        return PENDING_DIR;
-      case "done":
-        return DONE_DIR;
-      default:
-        return NOT_STARTED_DIR;
-    }
-  };
-
-  const base = getBase(folder);
+  const base = getBaseDirByFolder(folder);
   const oldPath = safeJoin(base, rest.join("/"));
   const parentDir = path.dirname(oldPath);
   const newPath = path.join(parentDir, newName);
