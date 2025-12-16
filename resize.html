@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <canvas id="canvas" width="1024" height="1024"></canvas>
+    <textarea id="output"></textarea>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = () => {
+            // Clear canvas (transparent)
+            ctx.clearRect(0, 0, 1024, 1024);
+            
+            // Calculate size (85% of 1024 = ~870px)
+            const size = 870;
+            const offset = (1024 - size) / 2;
+            
+            // Draw image centered
+            ctx.drawImage(img, offset, offset, size, size);
+            
+            // Output base64
+            document.getElementById('output').value = canvas.toDataURL('image/png');
+        };
+        img.src = 'icon_source.png';
+    </script>
+</body>
+</html>

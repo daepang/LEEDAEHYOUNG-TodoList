@@ -9,6 +9,8 @@
 # production
 /.next/
 /out/
+/dist/
+/dist-electron/
 
 # misc
 .DS_Store

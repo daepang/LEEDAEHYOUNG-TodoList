@@ -1,5 +1,10 @@
-/** @type {import('next').NextConfig} */
+const isElectronBuild = process.env.ELECTRON_BUILD === 'true';
+
 const nextConfig = {
+  output: isElectronBuild ? 'export' : undefined,
+  images: {
+    unoptimized: true,
+  },
   experimental: {
     typedRoutes: true,
     serverActions: {
