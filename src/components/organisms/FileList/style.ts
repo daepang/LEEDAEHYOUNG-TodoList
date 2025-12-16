@@ -1,13 +1,15 @@
 import { colors } from "@/constants/color";
 
 export const getListStyle = () => ({
-  flex: 1,
   border: `1px dashed ${colors.borderDashed}`,
   borderRadius: 8,
   padding: 8,
-  minHeight: 240,
+  height: "100%",
+  minHeight: 0,
   overflowY: "auto" as const,
-  maxHeight: "calc(100vh - 120px)",
+  display: "flex",
+  flexDirection: "column" as const,
+  boxSizing: "border-box" as const,
 });
 
 export const headerStyle = {
