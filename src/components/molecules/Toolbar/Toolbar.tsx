@@ -24,7 +24,9 @@ export function Toolbar({
       >
         {saving ? "저장 중..." : "저장"}
       </Button>
-      <div style={filePathStyle}>{activeFilePath || "파일을 선택하세요"}</div>
+      <div style={filePathStyle}>
+        {activeFilePath ? `📁 ${activeFilePath}` : "📄 파일을 선택하세요"}
+      </div>
     </div>
   );
 }
