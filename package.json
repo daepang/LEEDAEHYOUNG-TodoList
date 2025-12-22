@@ -26,7 +26,6 @@
     "cross-env": "^10.1.0",
     "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
-    "electron-is-dev": "^3.0.1",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.5",
     "typescript": "5.6.2",
@@ -40,9 +39,16 @@
       "icon": "build/icon.png"
     },
     "files": [
+      "dist-electron",
+      "out",
+      "build",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "asarUnpack": [
       "dist-electron/**/*",
       "out/**/*",
-      "package.json"
+      "build/**/*"
     ],
     "directories": {
       "output": "dist"
